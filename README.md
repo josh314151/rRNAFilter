@@ -12,3 +12,4 @@ TODO:
 3. allow for GPU multithreading
 4. test and refine on other strains/species
 5. explore different languages and packages to reduce runtime and memory usage
+6. make own progress bar instead of using tqdm
