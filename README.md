@@ -1,7 +1,9 @@
 # rRNAFilter
 
 To use, have .py and .txt file in same folder then run on commandline specifying input file name as commandline argument
+
 Takes fastq file as input
+
 Outputs original file and filtered file as input.fastq and output.fastq
 
 TODO:
