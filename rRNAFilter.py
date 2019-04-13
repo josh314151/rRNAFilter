@@ -3,7 +3,6 @@ import time
 from multiprocessing import Pool
 import multiprocessing
 import tqdm
-import matplotlib.pyplot as plt
 
 # check for correct number of arguments
 if (len(sys.argv) < 2):
@@ -32,10 +31,8 @@ try:
 	
 	# write file to an array and close the file (enumerate to allow for only parsing part of file)
 	print("generating array")
-	for num, line in enumerate(RNAseq, 1):
+	for num, line in enumerate(RNAseq, 0):
 		arr.append(line)
-		if(num >= (130000*4)):
-			break
 	RNAseq.close()
 	
 # print any exceptions that occur and exit	
@@ -98,11 +95,3 @@ if __name__ == '__main__':
 		end = time.time()
 		print()
 		print("Time taken =", int(end-start), "seconds")
-		
-		plt.hist(result)
-		plt.xlabel("Percent Identity")
-		plt.ylabel("Number of Values")
-		plt.title("Max Percent Identity of SRR1020876 to E.Coli rRNA")
-		plt.xlim(0, 100)
-		plt.grid(True)
-		plt.show()
