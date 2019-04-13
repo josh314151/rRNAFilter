@@ -56,13 +56,22 @@ def align_seq(sample):
 	pid = []
 	for i in range(3):
 		alignments = pairwise2.align.localms(rRNA_arr[i], arr[sample], 1, -3, -5, -4, one_alignment_only = True)
+		
+		#calculate percent identity
 		id = 0
 		for j in range(len(alignments[0][0])):
 			if(alignments[0][0][j] == alignments[0][1][j] and alignments[0][0][j] != '-'):
 				id = id + 1
+		id = int((id / min(len(rRNA_arr[i]), len(arr[sample]))) * 100)
+		
+		#return if >85 percent identity
 		if(id >= 85):
 			return(id)
-		pid.append(int((id / min(len(rRNA_arr[i]), len(arr[sample]))) * 100))
+		
+		#add percent identity to array
+		pid.append(id)
+		
+	#return maximum percent identity
 	output = max(pid)
 	return(output)
 
@@ -78,18 +87,20 @@ if __name__ == '__main__':
 	with Pool() as pool:
 		# get start time
 		start = time.time()
+		
+		#align sequences and get resulting percent identities in an array
 		result = pool.map(align_seq, input_arr)
-		count = 0
+		
+		#step backwards through array and pop out any reads above 85 percent identity
 		for i in range(len(result)-1, -1, -1):
 			if(result[i] >= 85):
-				count = count + 1
 				index = i*4
 				arr.pop(index+3)
 				arr.pop(index+2)
 				arr.pop(index+1)
 				arr.pop(index)
-		print()
-		print(count)
+		
+		#write to output file
 		write_to_file(arr, 'output.fastq')
 		# get end time and print time taken
 		end = time.time()
